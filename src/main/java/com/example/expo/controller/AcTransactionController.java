@@ -1,6 +1,11 @@
 package com.example.expo.controller;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,8 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import com.example.expo.entity.Account;
 import com.example.expo.entity.Transaction;
@@ -75,6 +84,36 @@ public class AcTransactionController {
 		return new ResponseEntity<String>("mail send",HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/generateCSV")
+	public void generateCSVFile(HttpServletResponse response) throws IOException {
+		List<Account> list =  ats.generatecsvFileData();
+
+
+		Date date = new Date(System.currentTimeMillis());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+		String txtDate = dateFormat.format(date);
+
+		response.setContentType("text/csv");
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=accountData_"+txtDate+".csv";
+
+		response.setHeader(headerKey, headerValue);
+
+		ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+
+		String[] csvName = {"ID","ACCOUNT_NUMBER","ACCOUNT_TYPE","IFSC_CODE","ACCOUNT_HOLDER_NAME","BRANCH_NAME","TOTAL_BALANCE","OPENING_DATE","STATUS","EMAIL_ID"};
+
+		String[] csvMapping = {"accountId","accountNumber","accountType","ifscCode","accountHolderName","branchName","balance","openingDate","active","email"};
+
+		csvWriter.writeHeader(csvName);
+
+		for(Account accountData : list) {
+			csvWriter.write(accountData, csvMapping);
+		}
+		csvWriter.close();
+	}
+
+	
 	@GetMapping(value = "/getallaccounts")
 	public ResponseEntity<List<Account>> getAllAccounts() {
 		List<Account> accounts = ats.getAllAccounts();

@@ -11,6 +11,7 @@ import java.util.stream.LongStream;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -161,6 +162,12 @@ public class ATServiceIMPL implements ATServiceI {
 	}
 	
 	@Override
+	public List<Account> generatecsvFileData() {
+			  List<Account> list = atr.findAll(Sort.by("email").and(Sort.by("accountNumber")).ascending());
+			  System.out.println(list);
+			  return list;	}
+	
+	@Override
 	public Account getAccountById(int accountId) {
 		Optional<Account> account = atr.findById(accountId);
 		return account.orElse(null);
@@ -205,6 +212,5 @@ public class ATServiceIMPL implements ATServiceI {
 	public List<Account> findAccountsByBranchName(String branchName) {
 		return atr.findAccountsByBranchName(branchName);
 	}
-
 
 }
