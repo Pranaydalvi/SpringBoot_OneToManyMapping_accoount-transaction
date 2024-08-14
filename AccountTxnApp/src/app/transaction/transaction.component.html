@@ -1,0 +1,27 @@
+<div class="transaction-container">
+    <h2>Create Transaction</h2>
+    <form (ngSubmit)="addtransactiondata()">
+        <label for="accountNumber">Account Number:</label>
+        <input type="text" id="accountNumber" [(ngModel)]="Transaction.accno" name="accountNumber" required>
+
+        <label>
+            <input type="radio" name="transactionType" value="credit" [(ngModel)]="transactionType" (change)="onTransactionTypeChange('credit')">
+            Credit
+        </label>
+        <label>
+            <input type="radio" name="transactionType" value="debit" [(ngModel)]="transactionType" (change)="onTransactionTypeChange('debit')">
+            Debit
+        </label>
+
+        <label for="creditAmount">Credit Amount:</label>
+        <input type="number" id="creditAmount" [(ngModel)]="Transaction.amountCredited" name="creditAmount" [disabled]="transactionType !== 'credit'">
+
+        <label for="debitAmount">Debit Amount:</label>
+        <input type="number" id="debitAmount" [(ngModel)]="Transaction.amountDebited" name="debitAmount" [disabled]="transactionType !== 'debit'">
+
+        <label for="beneficiaryAccount">Beneficiary Account Number:</label>
+        <input type="text" id="beneficiaryAccount" [(ngModel)]="Transaction.beneficiaryAccount" name="beneficiaryAccount">
+
+        <button type="submit">Submit Transaction</button>
+    </form>
+</div>

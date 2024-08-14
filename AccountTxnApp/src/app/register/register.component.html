@@ -1,0 +1,34 @@
+<p>register works!</p>
+<div class="container">
+    <h2>Register Account</h2>
+    <form >
+        <pre>
+        <label for="accountType">Account Type:</label>
+        <input type="text" id="accountType" [(ngModel)]="Account.accountType" name="accountType" required>
+
+        <label for="ifscCode">IFSC Code:</label>
+        <input type="text" id="ifscCode" [(ngModel)]="Account.ifscCode" name="ifscCode" required>
+
+        <label for="accountHolderName">Account Holder Name:</label>
+        <input type="text" id="accountHolderName" [(ngModel)]="Account.accountHolderName" name="accountHolderName" required>
+
+        <label for="branchName">Branch Name:</label>
+        <input type="text" id="branchName" [(ngModel)]="Account.branchName" name="branchName" required>
+
+        <label for="balance">Balance:</label>
+        <input type="number" id="balance" [(ngModel)]="Account.balance" name="balance" required>
+
+        <label for="active">Active:</label>
+    <input type="radio" id="active" [(ngModel)]="Account.active" name="active" [value]="true"> Yes
+    <input type="radio" id="notactive" [(ngModel)]="Account.active" name="active" [value]="false"> No
+
+
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" [(ngModel)]="Account.email" name="email" required>
+
+        <input type="submit" value="Register" (click)="adddata()">
+    </pre>
+    </form>
+  </div>
+  
