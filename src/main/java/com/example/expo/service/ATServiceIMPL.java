@@ -180,8 +180,21 @@ public class ATServiceIMPL implements ATServiceI {
 
 	@Override
 	public Account updateAccount(int accountId, Account account) {
+		Optional<Account> existingAccount = atr.findById(accountId);
+        if (existingAccount.isPresent()) {
+            Account updatedAccount = existingAccount.get();
+            updatedAccount.setAccountNumber(account.getAccountNumber());
+            updatedAccount.setAccountType(account.getAccountType());
+            updatedAccount.setIfscCode(account.getIfscCode());
+            updatedAccount.setAccountHolderName(account.getAccountHolderName());
+            updatedAccount.setBranchName(account.getBranchName());
+            updatedAccount.setBalance(account.getBalance());
+            updatedAccount.setOpeningDate(account.getOpeningDate());
+            updatedAccount.setActive(account.isActive());
+            updatedAccount.setTransactions(account.getTransactions());
+            return atr.save(updatedAccount);
+        }
 
-		return null;
 	}
 
 	@Override
